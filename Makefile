@@ -21,7 +21,6 @@ install: # Build all containers.
 	docker exec ${CONTAINER_PHP} php artisan key:generate
 	docker exec ${CONTAINER_PHP} php artisan migrate
 	docker exec ${CONTAINER_PHP} php artisan db:seed
-	docker exec ${CONTAINER_PHP} npm run build
 
 start: create-env ## Start all containers.
 	@docker compose up --force-recreate -d
