@@ -7,8 +7,22 @@ use App\Models\Transport;
 
 class TransportFactory
 {
-    public function create(string $licensePlate, float $tankCapacity, float $average, float $distance, ?Model $model): Transport
-    {
+    /**
+     * @param string $licensePlate
+     * @param float $tankCapacity
+     * @param float $average
+     * @param float $distance
+     * @param Model|null $model
+     *
+     * @return Transport
+     */
+    public function create(
+        string $licensePlate,
+        float $tankCapacity,
+        float $average,
+        float $distance,
+        ?Model $model
+    ): Transport {
         $transport = new Transport();
         $transport->license_plate = $licensePlate;
         $transport->fuel_tank_capacity = $tankCapacity;

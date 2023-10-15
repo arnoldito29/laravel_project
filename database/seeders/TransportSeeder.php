@@ -14,7 +14,7 @@ class TransportSeeder extends Seeder
     public function run(): void
     {
         $models = Model::whereNotNull('manufacturer_id')->get();
-        $models->each(function(Model $model) {
+        $models->each(function (Model $model) {
             Transport::factory()
                 ->create(['model_id' => $model->id]);
         });

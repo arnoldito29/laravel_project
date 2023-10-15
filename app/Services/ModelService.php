@@ -9,8 +9,14 @@ use App\Models\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 
+/**
+ * Model Service.
+ */
 class ModelService
 {
+    /**
+     * @param Model $model
+     */
     public function __construct(protected Model $model)
     {
     }
@@ -29,12 +35,17 @@ class ModelService
         ])->whereNull('manufacturer_id');
 
         if ($query) {
-            $queryBuilder->where('name','LIKE',"%{$query}%");
+            $queryBuilder->where('name', 'LIKE', "%{$query}%");
         }
 
         return $queryBuilder->orderBy('name')->get();
     }
 
+    /**
+     * @param ManufacturerRequest $request
+     *
+     * @return Model
+     */
     public function storeManufacturer(ManufacturerRequest $request): Model
     {
         $name = $request->get('name');
@@ -57,6 +68,12 @@ class ModelService
         return $manufacturer;
     }
 
+    /**
+     * @param Model $manufacturer
+     * @param ManufacturerRequest $request
+     *
+     * @return Model
+     */
     public function updateManufacturer(Model $manufacturer, ManufacturerRequest $request): Model
     {
         $name = $request->get('name');
@@ -79,6 +96,7 @@ class ModelService
     /**
      * @param Model $manufacturer
      * @param string|null $query
+     *
      * @return Collection
      */
     public function getModels(Model $manufacturer, ?string $query): Collection
@@ -87,7 +105,7 @@ class ModelService
             ->where('manufacturer_id', $manufacturer->id);
 
         if ($query) {
-            $queryBuilder->where('name','LIKE',"%{$query}%");
+            $queryBuilder->where('name', 'LIKE', "%{$query}%");
         }
 
         return $queryBuilder->orderBy('name')->get();
@@ -95,6 +113,7 @@ class ModelService
 
     /**
      * @param string|null $query
+     *
      * @return Collection
      */
     public function getAllModels(?string $query): Collection
@@ -102,17 +121,29 @@ class ModelService
         $queryBuilder = $this->model::with('manufacturer')->whereNotNull('manufacturer_id');
 
         if ($query) {
-            $queryBuilder->where('name','LIKE',"%{$query}%");
+            $queryBuilder->where('name', 'LIKE', "%{$query}%");
         }
 
         return $queryBuilder->orderBy('name')->get();
     }
 
+    /**
+     * @param Model $manufacturer
+     * @param Model $model
+     *
+     * @return Model
+     */
     public function getModel(Model $manufacturer, Model $model): Model
     {
         return $manufacturer->models()->where('id', $model->id)->firstOrFail();
-
     }
+
+    /**
+     * @param Model $manufacturer
+     * @param ModelRequest $request
+     *
+     * @return Model
+     */
     public function storeModel(Model $manufacturer, ModelRequest $request): Model
     {
         $name = $request->get('name');
@@ -135,6 +166,13 @@ class ModelService
         return $model;
     }
 
+    /**
+     * @param Model $manufacturer
+     * @param Model $model
+     * @param ModelRequest $request
+     *
+     * @return Model
+     */
     public function updateModel(Model $manufacturer, Model $model, ModelRequest $request): Model
     {
         $name = $request->get('name');
@@ -144,6 +182,11 @@ class ModelService
         return $model;
     }
 
+    /**
+     * @param Model $model
+     *
+     * @return bool
+     */
     public function removeModel(Model $model): bool
     {
         return $model->delete();
