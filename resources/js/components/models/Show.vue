@@ -25,6 +25,9 @@ export default {
     },
     methods: {
         getModel(manufacturer, id) {
+            if (manufacturer === undefined) {
+                return;
+            }
             ModelService.get(manufacturer, id)
                 .then(response => {
                     this.currentModel = response.data.data;

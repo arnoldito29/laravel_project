@@ -27,7 +27,7 @@
 
 <script>
 import ModelService from "../../services/ModelService";
-import Show from "../manufacturers/Show.vue";
+
 export default {
     name: "add-model",
     data() {
