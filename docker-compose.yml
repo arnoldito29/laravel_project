@@ -1,0 +1,44 @@
+version: '3.5'
+
+services:
+  laravel-app:
+    build:
+      context: '.'
+    container_name: laravel-app
+    ports:
+      - "8000:80"
+    environment:
+      - APACHE_RUN_USER=www-data
+      - APACHE_RUN_GROUP=www-data
+    volumes:
+      - .:/var/www/html
+    depends_on:
+        - mysql-db
+    networks:
+      - backend
+
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql-db
+    volumes:
+      - ./run/var:/var/lib/mysql
+    ports:
+        - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+    networks:
+      - backend
+  npm:
+      image: node:16
+      container_name: project_name_npm
+      user: "1000:1000"
+      volumes:
+          - .:/var/www/html
+      working_dir: /var/www/html
+      entrypoint: ['npm']
+networks:
+  backend:
+      driver: bridge
